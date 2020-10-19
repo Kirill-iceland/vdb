@@ -45,7 +45,7 @@ class game{
             .setColor('#800000')
             .setTitle("New Game")
             .setURL()
-            .setAuthor('Varúlfur', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', 'https://github.com/Kirill-iceland/voting-bot')
+            .setAuthor('Varúlfur', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', 'https://github.com/Kirill-iceland/vdb')
             .setDescription('To join the game press ☑. To start the game press ✅.')
             .setThumbnail('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
             .addFields(
@@ -88,7 +88,7 @@ class game{
             .setColor('#A0A000')
             .setTitle("New Game")
             .setURL()
-            .setAuthor('Varúlfur', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', 'https://github.com/Kirill-iceland/voting-bot')
+            .setAuthor('Varúlfur', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', 'https://github.com/Kirill-iceland/vdb')
             .setDescription('Select deck and press ✅ to start the game. To reset deck press ❌')
             .setThumbnail('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
             .addFields(
@@ -221,7 +221,7 @@ class game{
             .setColor('#A0A000')
             .setTitle("New Game")
             .setURL()
-            .setAuthor('Varúlfur', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', 'https://github.com/Kirill-iceland/voting-bot')
+            .setAuthor('Varúlfur', 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png', 'https://github.com/Kirill-iceland/vdb')
             .setDescription('Select a deck and press ✅ to start the game. To reset deck press ❌')
             .setThumbnail('https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
             .addFields(

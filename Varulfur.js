@@ -29,23 +29,77 @@ class game{
      * @param {Discord.TextChannel} channel 
      * @param {object} options 
      */
-    constructor(stage, channel, options){
+    constructor(stage, channel, options = ""){
         this.stage = stage;
         this.channel = channel;
+        this.options = {};
+        var NoErr = true;
+        
         if(options != ""){
             this.options = JSON.parse(options);
-            console.log(this.options)
+            if(this.options.deck){
+                var deck = this.options.deck.split(",")
+                console.log(deck);
+                for(var i = 0; i < deck.length; i++){
+                    switch(deck[i].toLowerCase()){
+                        case "v":
+                            deck[i] = new card("villager");
+                            break;
+                        case "w":
+                            deck[i] = new card("werewolf");
+                            break;
+                        case "mi":
+                            deck[i] = new card("minion");
+                            break;
+                        case "ma":
+                            deck[i] = new card("mason");
+                            break;
+                        case "s":
+                            deck[i] = new card("seer");
+                            break;
+                        case "r":
+                            deck[i] = new card("robber");
+                            break;
+                        case "tr":
+                            deck[i] = new card("troublemaker");
+                            break;
+                        case "dr":
+                            deck[i] = new card("drunk");
+                            break;
+                        case "h":
+                            deck[i] = new card("hunter");
+                            break;
+                        case "i":
+                            deck[i] = new card("insomniac");
+                            break;
+                        case "ta":
+                            deck[i] = new card("tanner");
+                            break;
+                        case "do":
+                            deck[i] = new card("doppelgänger");
+                            break;
+                        default:
+                            this.channel.send("This deck is invalid!")
+                            NoErr = false;
+                    }
+                    this.options.players = {min: deck.length - 3, max: deck.length - 3};
+                    this.options.deck = deck;
+                }
+            }
         }
-        switch(stage){
-            case 0:
-                this.PlayerSelection();
-                break;
-            case 1:
 
-                break;
-            case 2:
-                
-                break;
+        if(NoErr){
+            switch(stage){
+                case 0:
+                    this.PlayerSelection();
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    
+                    break;
+            }
         }
     }
 
@@ -68,10 +122,12 @@ class game{
 
             const filter = (reaction, user) => reaction.emoji.name === '✅';
             const collector = embeded_msg.createReactionCollector(filter, {time: exports.time_until_join});
-            collector.on('collect', r => {if(r.count > 1) {
-                collector.stop('NoEnd');
-                this.DeckSelection();
-            }});
+            collector.on('collect', r => {
+                if(r.count > 1) {
+                    collector.stop('NoEnd');
+                    this.DeckSelection();
+                }
+            });
             collector.on('end', (collected, reason) => {if(reason != 'NoEnd'){this.DeckSelection()}});  
         })
         .catch(()=>{});
@@ -85,6 +141,16 @@ class game{
             this.join_message.channel.send("```\nSorry there are not enough people to start the game.\nYou need at least " + exports.players_to_start + " people to start the game!\n```")
             return 0;
         }
+        if(this.options.players){
+            if(this.players.length < this.options.players.min + 1){
+                this.join_message.channel.send("```\nSorry there are not enough people to start the game.\nYou need at least " + this.options.players.min + " people to start the game!\n```")
+                return 0;
+            }else if(this.players.length > this.options.players.max + 1){
+                console.log(this.players.length + " " + this.options.players.max)
+                this.join_message.channel.send("```\nSorry there are too many people to start the game.\nNot more then " + this.options.players.max + " people to start the game!\n```")
+                return 0;
+            }
+        }
 
         for(var i = 0; i < this.players.length; i++){
             if(this.players[i].id == this.join_message.author.id){
@@ -97,6 +163,13 @@ class game{
             console.log(this.players[i].username.red)
         }
         console.log(`joined the game.\n`.green)
+
+        if(this.options.deck){
+            console.log(this.options.deck)
+            this.deck = this.options.deck;
+            this.Start(true)
+            return 1;
+        }
 
         // console.log(this.players)
         const embeded = new Discord.MessageEmbed()
@@ -249,9 +322,15 @@ class game{
         this.deck_message1.edit(embeded)
     }
 
-    async Start(){
-        this.deck_message1.delete()
-        this.deck_message2.delete()
+    /**
+     * 
+     * @param {Boolean} NoDelete 
+     */
+    async Start(NoDelete = false){
+        if(!NoDelete){
+            this.deck_message1.delete()
+            this.deck_message2.delete()
+        }
         
         const embeded = new Discord.MessageEmbed()
             .setColor('#00A000')
@@ -530,11 +609,14 @@ class layout{
      */
     copy(){
         var copy = new layout(this.deck, this.game)
-        copy.players = this.players;
-        copy.order = this.order;
-        copy.center = this.center;
-        copy.shuffled = this.shuffled;
-        copy.numberofmove = this.numberofmove;
+        copy.players = this.players.slice(0);
+        for(var i = 0; i < this.players.length; i++){
+            copy.players[i] = Object.assign({}, this.players[i]);
+        }
+        copy.order = this.order.slice(0);
+        copy.center = this.center.slice(0);
+        copy.shuffled = !(!this.shuffled);
+        copy.numberofmove = this.numberofmove * 1;
 
         return(copy);
     }
@@ -634,7 +716,7 @@ class card{
             
 
         }else if(this.type == 1){
-            var other_people = layout.players.slice(0);
+            var other_people = layout.game.final_layout.players.slice(0);
             other_people.splice(id, 1);
             var other_werewolfs = [];
             for(var i = 0; i < other_people.length; i++){
@@ -700,7 +782,7 @@ class card{
                                     number++;
                                 }
 
-                                msg.channel.send(this.layout.game.final_layout.players[number].user.username + " has a **" + this.layout.game.final_layout.players[number].card.name + "** card.")
+                                msg.channel.send(this.layout.game.final_layout.players[number].user.username + " has a **" + this.layout.players[number].card.name + "** card.")
                                 console.log(user.username.red + " checked ".green + this.layout.players[number].user.username.red + " card".green)
 
                                 collector.stop();
@@ -875,12 +957,38 @@ class card{
                 break;
             case exports.types[8].id:
                 break;
-            case exports.types[9].id:
-                break;
-            case exports.types[10].id:
+            case exports.types[9].id://insomniac
+                var color;
+                switch(this.layout.game.final_layout.players[id].card.team){
+                    case 0:
+                        color = '#00ff00';
+                        break;
+                    case 1:
+                        color = '#ff0000';
+                        break;
+                    case 2:
+                        color = '#ffff00';
+                        break;
+                    case 3:
+                        color = '#ff00ff';
+                        break;
+                }
+                await this.layout.players[id].message.edit(new Discord.MessageEmbed()
+                    .setColor(color)
+                    .setTitle("You are now " + this.layout.game.final_layout.players[id].card.name)
+                    .setDescription("This card you currenly have")
+                    .setURL()
+                    .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
+                    .setImage('https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/cb/' + this.layout.game.final_layout.players[id].card.basic_latin + ".png")
+                    .setTimestamp()
+                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                );
                 this.layout.game.move()
                 break;
-            case exports.types[11].id://dopleganger
+            case exports.types[10].id://Tanner
+                this.layout.game.move()
+                break;
+            case exports.types[11].id://doppleganger
                 this.layout.players[id].message.edit(new Discord.MessageEmbed()
                     .setColor(this.layout.players[id].message.embeds[0].color)
                     .setTitle(this.layout.players[id].message.embeds[0].title)
@@ -897,7 +1005,7 @@ class card{
                         message.delete()
                     })
                 var collector = this.user.dmChannel.createMessageCollector(msg => !msg.author.bot)
-                    .on("collect", msg => {
+                    .on("collect", async msg => {
                         var number = parseInt(msg.content);
                         // console.log(this.layout.game.final_layout.players)
                         if(!Number.isNaN(number) && number >= 0 && number < this.layout.players.length - 1){
@@ -923,7 +1031,7 @@ class card{
                                     color = '#ff00ff';
                                     break;
                             }
-                            this.layout.players[id].message.edit(new Discord.MessageEmbed()
+                            await this.layout.players[id].message.edit(new Discord.MessageEmbed()
                                 .setColor(color)
                                 .setTitle("You are now " + this.layout.game.final_layout.players[id].card.name)
                                 .setDescription("This is card you copyed from " + this.layout.players[number].user.username + ". Thank you for making a move")

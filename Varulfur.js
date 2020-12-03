@@ -17,7 +17,7 @@ exports.types = [{id: 0, order: -1, type: "villager", basic_latin: "villager", t
                 {id: 8, order: -1, type: "hunter", basic_latin: "hunter", team: 0}, 
                 {id: 9, order: 6, type: "insomniac", basic_latin: "insomniac", team: 0},
                 {id: 10, order: -1, type: "tanner", basic_latin: "tanner", team: 2},
-                {id: 11, order: 0, type: "doppelgänger", basic_latin: "doppelganger", team: 3}];
+                {id: 11, order: 0, type: "doppelgänger", basic_latin: "doppelgnger", team: 3}];
 
                 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ class game{
         this.players = (await this.join_message.reactions.resolve('☑').users.fetch()).array()
         this.join_message.delete();
         if(this.players.length < exports.players_to_start){
-            this.join_message.channel.send("```\nSorry there are not enough people to start the game.\nYou need at least " + exports.players_to_start + " people to start the game!\n```")
+            this.join_message.channel.send("```\nSorry there aren't enough players to start the game.\nYou need at least " + exports.players_to_start + " players to start the game!\n```")
             return 0;
         }
 
@@ -112,7 +112,7 @@ class game{
                 { name: 'Others:', value: "\u200b", inline: true }
             )
             .setTimestamp()
-            .setFooter('Thank you for joining!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
+            .setFooter('Thanks for joining!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
 
         await this.channel.send(embeded).then(async (embeded_msg) => {
             for(var i = 0; i < exports.types.length; i++){
@@ -167,7 +167,7 @@ class game{
             collector.on('collect', (r, user) => {if(r.count > 1) {
                 if(r.emoji.name == '✅'){
                     if(this.deck.length != this.players.length + 3){
-                        this.channel.send("```Sorry, there are not enough cards to start the game.```")
+                        this.channel.send("```Sorry, there aren't enough cards to start the game.```")
                         r.users.remove(user);
                         return 0;
                     }
@@ -257,13 +257,13 @@ class game{
             .setColor('#00A000')
             .setTitle("The game has started")
             .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
-            .setDescription('You should get a message from werewolf')
-            .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
+            .setDescription('You should get a dm from the bot with your card.')
+            .setFooter("Thanks for playing!", "https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png");
 
         this.start_message = await this.channel.send(embeded);
         this.layout = new exports.layout(this.deck, this);
         this.layout.shuffle()
-        console.log(`The deck has been selected and shufled. Here is the deck:`.green)
+        console.log(`The deck has been selected and shuffled. Here's the deck:`.green)
         for(var i = 0; i < this.layout.players.length; i++){
             console.log(this.layout.players[i].card.name.yellow + " --- ".green + this.layout.players[i].user.username.red)
         }
@@ -302,7 +302,7 @@ class game{
             .setColor('#00A000')
             .setTitle("Meeting")
             .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
-            .setDescription('Time to chouse who to vote out. If there is a tie the player will be chousen randomly')
+            .setDescription('Time to choose who to vote out. If there is a tie the player will be chosen randomly')
             .addFields(fields)
             .setFooter('Thank you for joining!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
         
@@ -379,7 +379,7 @@ class game{
             .setDescription(HScore.user.username + " was voted out!\n" + end_msg)
             .addFields(fields)
             .setImage(img)
-            .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
+            .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
         
         this.meeting_message = this.channel.send(embeded);
 
@@ -411,9 +411,9 @@ class game{
             .setColor('#00A000')
             .setTitle("Meeting")
             .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
-            .setDescription('Time to chouse who to vote out. If there is a tie the player will be chousen randomly')
+            .setDescription('Time to choose who to vote out. If there is a tie the player will be chosen randomly')
             .addFields(fields)
-            .setFooter('Thank you for joining!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+            .setFooter('Thanks for joining!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
         );
 
         if(!skip){
@@ -494,7 +494,7 @@ class layout{
                 .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                 .setImage('https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/cb/' + this.players[i].card.basic_latin + ".png")
                 .setTimestamp()
-                .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
+                .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
 
             this.players[i].message = await this.players[i].user.send(embeded);
         }
@@ -661,7 +661,7 @@ class card{
                     .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                     .setImage(this.layout.players[id].message.embeds[0].image.url)
                     .setTimestamp()
-                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                    .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                 );
                 this.user.send(this.user.toString())
                     .then((message) => {
@@ -677,12 +677,12 @@ class card{
                 this.layout.players[id].message.edit(new Discord.MessageEmbed()
                     .setColor(this.layout.players[id].message.embeds[0].color)
                     .setTitle(this.layout.players[id].message.embeds[0].title)
-                    .setDescription("To see a card of a user write a number that is infront of the user. If you want to check cards in midle write two different numbers from 1-3 with aspace between. Example: 0 or 1 2")
-                    .addField(" Here are users:", other_people)
+                    .setDescription("To see a card of a user write a number that's infront of the user. If you want to check cards in middle write two different numbers from 1-3 with a space between. Example: 0 or 1 2")
+                    .addField(" Here are the users:", other_people)
                     .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                     .setImage(this.layout.players[id].message.embeds[0].image.url)
                     .setTimestamp()
-                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                    .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                     );
                 this.user.send(this.user.toString())
                     .then((message) => {
@@ -707,7 +707,7 @@ class card{
                                 collector.stop();
                                 this.layout.game.move()
                             }else{
-                                msg.channel.send(msg.content + " is a invalid number.")
+                                msg.channel.send(msg.content + " is an invalid number.")
                             }
                         
                         }else if(numbers.length == 2){
@@ -716,9 +716,9 @@ class card{
                             numbers[1] = parseInt(numbers[1]) 
 
                             if(Number.isNaN(numbers[0]) || numbers[0] > 3 || numbers[0] < 1){
-                                msg.channel.send(msg.content.split(" ")[0] + " is a invalid number.")
+                                msg.channel.send(msg.content.split(" ")[0] + " is an invalid number.")
                             }else if(Number.isNaN(numbers[1]) || numbers[1] > 3 || numbers[1] < 1){
-                                msg.channel.send(msg.content.split(" ")[1] + " is a invalid number.")
+                                msg.channel.send(msg.content.split(" ")[1] + " is an invalid number.")
                             }else if(numbers[0] == numbers[1]){
                                 msg.channel.send(numbers[0] + " and " + numbers[1] + " are the same numbers.")
                             }else{
@@ -735,13 +735,13 @@ class card{
                 this.layout.players[id].message.edit(new Discord.MessageEmbed()
                     .setColor(this.layout.players[id].message.embeds[0].color)
                     .setTitle(this.layout.players[id].message.embeds[0].title)
-                    .setDescription("To swap cards with the user write a number that is infront of  the user.")
-                    .addField(" Please chose one of the folloing people to swap your card with:", other_people)
+                    .setDescription("To swap cards with the user write a number that is infront of the user.")
+                    .addField(" Please choose one of the folloing people to swap your card with:", other_people)
                     .setURL()
                     .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                     .setImage(this.layout.players[id].message.embeds[0].image.url)
                     .setTimestamp()
-                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                    .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                 );
                 this.user.send(this.user.toString())
                     .then((message) => {
@@ -757,7 +757,7 @@ class card{
                             }
                             this.layout.game.final_layout.swap(id, number)
                             // console.log(this.layout.game.final_layout.players)
-                            console.log(user.username.red + " swaped cards with ".green + this.layout.players[number].user.username.red)
+                            console.log(user.username.red + " swapped cards with ".green + this.layout.players[number].user.username.red)
 
                             var color;
                             switch(this.layout.game.final_layout.players[id].card.team){
@@ -777,18 +777,18 @@ class card{
                             this.layout.players[id].message.edit(new Discord.MessageEmbed()
                                 .setColor(color)
                                 .setTitle("You are now " + this.layout.game.final_layout.players[id].card.name)
-                                .setDescription("This is card you got from " + this.layout.players[number].user.username + ". Thank you for making a move")
+                                .setDescription("This is card you got from " + this.layout.players[number].user.username + ". Thanks for making a move")
                                 .setURL()
                                 .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                                 .setImage('https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/cb/' + this.layout.game.final_layout.players[id].card.basic_latin + ".png")
                                 .setTimestamp()
-                                .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                                .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                             );
 
                             collector.stop();
                             this.layout.game.move()
                         }else{
-                            msg.channel.send(msg.content + " is a invalid number.")
+                            msg.channel.send(msg.content + " is an invalid number.")
                         }
                     });
                 break;
@@ -801,7 +801,7 @@ class card{
                     .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                     .setImage(this.layout.players[id].message.embeds[0].image.url)
                     .setTimestamp()
-                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                    .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                 );
                 this.user.send(this.user.toString())
                     .then((message) => {
@@ -833,8 +833,8 @@ class card{
                                     numbers[1]++;
                                 }
                                 this.layout.game.final_layout.swap(numbers[0], numbers[1])
-                                msg.channel.send("You swaped cards between " + this.layout.game.final_layout.players[numbers[0]].user.username + " and " + this.layout.game.final_layout.players[numbers[1]].user.username)
-                                console.log(user.username.red + " swaped cards between ".green + this.layout.game.final_layout.players[numbers[0]].user.username.red + " and ".green + this.layout.game.final_layout.players[numbers[1]].user.username.red)
+                                msg.channel.send("You swapped cards between " + this.layout.game.final_layout.players[numbers[0]].user.username + " and " + this.layout.game.final_layout.players[numbers[1]].user.username)
+                                console.log(user.username.red + " swapped cards between ".green + this.layout.game.final_layout.players[numbers[0]].user.username.red + " and ".green + this.layout.game.final_layout.players[numbers[1]].user.username.red)
                                 
                                 collector.stop();
                                 this.layout.game.move()
@@ -846,11 +846,11 @@ class card{
                 this.layout.players[id].message.edit(new Discord.MessageEmbed()
                     .setColor(this.layout.players[id].message.embeds[0].color)
                     .setTitle(this.layout.players[id].message.embeds[0].title)
-                    .setDescription("To swap your card with a card in the center chouse a number between 1-3.")
+                    .setDescription("To swap your card with a card in the center choose a number between 1-3.")
                     .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                     .setImage(this.layout.players[id].message.embeds[0].image.url)
                     .setTimestamp()
-                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                    .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                 );
                 this.user.send(this.user.toString())
                     .then((message) => {
@@ -865,8 +865,8 @@ class card{
                             msg.channel.send(msg.content + " is a invalid number.")
                         }else{
                             this.layout.game.final_layout.swap(id, 1 - number)
-                            msg.channel.send("You swaped your card with " + number.toString() + " card in the midle")
-                            console.log(user.username.red + " swaped his card with ".green + number + " card in the middle.".green)
+                            msg.channel.send("You swapped your card with " + number.toString() + " card in the midle")
+                            console.log(user.username.red + " swapped his card with ".green + number + " card in the middle.".green)
                             
                             collector.stop();
                             this.layout.game.move()
@@ -885,13 +885,13 @@ class card{
                 this.layout.players[id].message.edit(new Discord.MessageEmbed()
                     .setColor(this.layout.players[id].message.embeds[0].color)
                     .setTitle(this.layout.players[id].message.embeds[0].title)
-                    .setDescription("To copy someones card chouse a number that is in front of the user.")
-                    .addField(" Please chose one of the folloing people to copy from:", other_people)
+                    .setDescription("To copy someones card choose a number that is in front of the user.")
+                    .addField(" Please choose one of the following people to copy from:", other_people)
                     .setURL()
                     .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                     .setImage(this.layout.players[id].message.embeds[0].image.url)
                     .setTimestamp()
-                    .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                    .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                 );
                 this.user.send(this.user.toString())
                     .then((message) => {
@@ -927,18 +927,18 @@ class card{
                             this.layout.players[id].message.edit(new Discord.MessageEmbed()
                                 .setColor(color)
                                 .setTitle("You are now " + this.layout.game.final_layout.players[id].card.name)
-                                .setDescription("This is card you copyed from " + this.layout.players[number].user.username + ". Thank you for making a move")
+                                .setDescription("This is the card you copied from " + this.layout.players[number].user.username + ". Thank you for making a move")
                                 .setURL()
                                 .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
                                 .setImage('https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/cb/' + this.layout.game.final_layout.players[id].card.basic_latin + ".png")
                                 .setTimestamp()
-                                .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
+                                .setFooter('Thanks for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png')
                             );
 
                             collector.stop();
                             this.layout.game.final_layout.players[id].card.move(layout, user, id)
                         }else{
-                            msg.channel.send(msg.content + " is a invalid number.")
+                            msg.channel.send(msg.content + " is an invalid number.")
                         }
                     });
                 break;

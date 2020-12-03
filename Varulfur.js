@@ -336,6 +336,7 @@ class game{
             .setColor('#00A000')
             .setTitle("The game has started")
             .setAuthor('Varúlfur', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png', 'https://github.com/Kirill-iceland/vdb')
+            .setDescription('You should get a message from werewolf')
             .setFooter('Thank you for playing!', 'https://raw.githubusercontent.com/Kirill-iceland/vdb/master/img/reactions/werewolf.png');
 
         this.start_message = await this.channel.send(embeded);

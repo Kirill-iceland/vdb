@@ -17,7 +17,7 @@ exports.types = [{id: 0, order: -1, type: "villager", basic_latin: "villager", t
                 {id: 8, order: -1, type: "hunter", basic_latin: "hunter", team: 0}, 
                 {id: 9, order: 6, type: "insomniac", basic_latin: "insomniac", team: 0},
                 {id: 10, order: -1, type: "tanner", basic_latin: "tanner", team: 2},
-                {id: 11, order: 0, type: "doppelgänger", basic_latin: "doppelgnger", team: 3}];
+                {id: 11, order: 0, type: "doppelgänger", basic_latin: "doppelganger", team: 3}];
 
                 
 //-----------------------------------------------------------------------------------------------------------------------
